@@ -1,0 +1,21 @@
+// Note: this is not working yet
+
+method sum(x: Int) returns (res: Int)
+    requires x >= 0
+    ensures res == x * (x+1) / 2
+{
+    if(x == 0) {
+        res := 0
+    } else {
+        var temp: Int := sum(x-1)
+        res := x + temp
+    }
+}
+
+method main() {
+    var r: Int 
+
+    r := sum(10)
+
+    assert r == 55
+}

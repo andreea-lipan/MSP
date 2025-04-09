@@ -1,0 +1,45 @@
+// --------- Requirements ----------
+
+// Write at least 2 implementations for the method below that
+// verify. Try to find one that does NOT compute the max
+//
+// method max(x: Int, y: Int) returns (r: Int)
+//      ensures r >= x
+//      ensures r >= y  // conjuctions of postconditions
+// {
+//      TODO
+// }
+
+
+// --------- Solution ----------
+
+// Computes max
+method max(x: Int, y: Int) returns (r: Int)
+    ensures r >= x
+    ensures r >= y
+{
+    // r := x > y ? x : y
+    if (x > y)
+    {
+        r := x
+    }
+    else
+    {
+        r := y
+    }
+}
+
+// Does not compute max
+method max2(x: Int, y: Int) returns (r: Int)
+    ensures r >= x
+    ensures r >= y
+{
+    if (x > y)
+    {
+        r := x + 1
+    }
+    else
+    {
+        r := y + 3
+    }
+}

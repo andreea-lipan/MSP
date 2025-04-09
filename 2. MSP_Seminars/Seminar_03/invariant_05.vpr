@@ -1,0 +1,42 @@
+// --------- Requirements ----------
+// Implement and verify the method below such that it returns the square of
+// any given non-negative integer n. Your implementation must not use 
+// recursion or any arithmetic other than constants and +1. That is, x := 0
+// and x := x + 1 are allowed. However, x := y + z, x := x * y, and 
+// x := 2 * x are not allowed.
+// You may still use arbitrary arithmetic in assertions and invariants.
+
+//method square(n: Int) returns (res: Int)
+//    requires n >= 0
+//    ensures res == n * n
+//{
+//    // TODO
+//}
+
+// --------- Solution ----------
+method square(n: Int) returns (res: Int)
+    requires n >= 0
+    ensures res == n * n 
+{
+    var x: Int
+    var y: Int
+    
+    res := 0
+    x := 0
+    y := 0
+    while (x != n)
+        invariant res == x * n + y && y == 0 
+    {
+
+        while (y != n)
+            invariant res == x * n + y
+        {
+            y := y + 1
+            res := res + 1
+        }
+        
+        x := x + 1
+        y := 0
+    }
+
+}

@@ -1,0 +1,15 @@
+method c() {
+    var x: Int
+    var y: Int
+
+    assume 0 < x && x < y
+
+    // {0 < x0 && x0 < y0}
+    x := x + 23 
+    // {0 < x0 && x0 < y0 && x1 = x0 + 23}
+    y := y - 3 * x
+    // {0 < x0 && x0 < y0 && x1 = x0 + 23 && y1 = y0 - 3 * x1}
+
+    assert 23 < x && y + 3 * x > 0 // TODO
+}
+

@@ -1,0 +1,10 @@
+method a(x: Int, y: Int) returns (z: Int)
+    requires 0 <= x && x <= y && y < 100
+    //ensures 0 <= z && z < 100 && z == y - x // TODO
+    ensures 0 <= x && x <= y && y < 100 && z == y - x
+{
+    //  {0 <= x && x <= y && y < 100}
+    z := y - x
+    //  {0 <= x && x <= y && y < 100 && z == y - x}
+}
+

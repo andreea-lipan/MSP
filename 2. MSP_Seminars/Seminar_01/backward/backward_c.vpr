@@ -1,0 +1,20 @@
+method c() {
+    var x: Int 
+    var y: Int 
+
+    assume ((y > 5 && x > 7) && (y <= 5 && y - x > 7)) //TODO
+
+    // {x > 7 && y > 5}   &&  {y - x > 7 && y <= 5}
+    if (y > 5) {
+        // {x > 7 && y > 5} 
+        y := x - y 
+    } else {
+        // {y - x > 7 && y <= 5}
+        x := y - x 
+    }
+
+    // {x > 7}
+    assert x > 7 
+}
+
+ 

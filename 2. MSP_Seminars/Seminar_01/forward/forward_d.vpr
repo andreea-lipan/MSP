@@ -1,0 +1,23 @@
+method d() {
+    var x: Int 
+    var y: Bool 
+     
+    assume x > 0 
+    // { x > 0 }
+    x := x + 1
+    // { x0 > 0 && x == x0 + 1 }
+
+    if (y) {
+        // { x0 > 0 && x == x0 + 1 && y }
+        var z: Int 
+        x := x + z
+        // { x0 > 0 && x1 == x0 + 1 && y && x == x1 + z}
+    } else {
+        // { x0 > 0 && x == x0 + 1 && !y}
+        x := 42
+        // { x0 > 0 && x1 == x0 + 1 && !y && x == 42}
+    }
+    // { x0 > 0 && x1 == x0 + 1 && y && x == x1 + z} || { x0 > 0 && x1 == x0 + 1 && !y && x == 42}
+    assert y || x == 42 // TODO 
+}
+

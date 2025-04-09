@@ -1,0 +1,16 @@
+method a(x: Int, y: Int) returns (X: Int, Y: Int)
+    // requires x == 0
+    requires true // TODO
+    ensures X == y && Y == x
+{
+    // {y == y && y - y + x == x} <=> {y == y && x == x}   <- end here
+    X := y - x
+    // {y - X + X == y && y - X == x}
+    Y := y - X
+    // {Y + X == y && Y == x}
+    X := Y + X
+    // {X == y && Y == x}     <- start here
+}
+
+// La backwards lucrurile incep de la baza si se iau in sus
+// [vezi formula slide-uri]

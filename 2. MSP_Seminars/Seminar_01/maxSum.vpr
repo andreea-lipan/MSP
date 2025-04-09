@@ -1,0 +1,72 @@
+// ------------ Requirements --------------
+
+// Consider the methond maxSum with the following signature:
+// method maxSum(x: Int, y: Int)
+//      returns (sum: Int, max: Int)
+// max is supposed to store the sum of x and y in variable
+// sum and the maximum of x and y in variable max, respectively.
+
+// a). Define a reasonable contract for maxSum
+// b). Implement a method that calls maxSum on 1723 and 42. 
+//     Test your contract by adding assertions after the
+//     call. Improve your contract if any asertions fails.
+// c). Implement maxSum.
+// 
+// Now consider a method reconstructMaxSum that tries to 
+// determine the values of maxSum's input parameters from the
+// output parameters, i.e. it reconstructs x and y from sum and max.
+// d). Write an abstract method with a postcondition specifying
+//     the behaviour of reconstructMaxSum.
+// e). Can you give an implementation of reconstructMaxSum? 
+//     if not, can you implement it after adding a precondition?
+// f). Write a client to test your implementation of 
+//     reconstructMaxSum.
+
+
+
+// ------------ Solution --------------
+
+method maximum(x: Int, y: Int) returns (max:Int)
+    requires true
+    ensures max >= x && max >= y && (max == x || max == y)
+{
+    max := x > y ? x : y
+}
+
+// a). && b). && c).
+method maxSum(x: Int, y: Int) returns (sum: Int, max: Int)
+    requires true
+    ensures sum == x + y
+    ensures max >= x && max >= y && (max == x || max == y)
+{
+    sum := x + y
+    max := maximum(x, y)
+}
+
+// d). && e).
+method reconstructMaxSum(sum: Int, max: Int) returns (x: Int, y: Int)
+    requires true
+    ensures x + y == sum && max == x
+{
+    x := max
+    y := sum - max
+}
+
+
+// f). && b).
+method client()
+{
+    var x :Int := 1723
+    var y :Int := 42
+    var sum: Int, max: Int
+    
+    // b).
+    sum, max := maxSum(x,y)
+    assert sum == 1765
+    assert max == 1723
+
+    // f).
+    x,y := reconstructMaxSum(sum, max)
+    assert x == 1723
+    assert y == 42
+}

@@ -1,0 +1,31 @@
+// --------- Requirements ----------
+// Find the invariant and check it in Viper
+
+// --------- Solution ----------
+// I've also done the variant (used to verify the termination of a loop)
+
+method main() {
+    var M: Int 
+    var N: Int 
+    var res: Int 
+
+    assume N > 0 && M >= 0
+
+    var m: Int := M 
+    res := 0
+
+    while (m >= N) 
+        invariant M == res * N + m     // invariant
+    {
+        var z: Int := M - (res * N)    // variant
+        assert z >= 0                  // variant
+
+        m := m - N 
+        res := res + 1
+
+        assert M - (res * N) >= 0     // variant
+        assert M - (res * N) < z      // variant
+    }
+
+    assert M == res * N + m 
+}

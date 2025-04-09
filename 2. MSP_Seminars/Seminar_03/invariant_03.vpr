@@ -1,0 +1,50 @@
+// --------- Requirements ----------
+// The following Viper program attempts to compute the integer square root 
+// of some natural number n. Find a suitable invariant for the line marked 
+// with TODO such that the program verifies.
+
+// Hint: Notice that the specification admits programs that do not enforce 
+// the computation of the integer square root of n. You should still find 
+// a suitable invariant.
+
+//method int_sqrt() {
+//    var n: Int
+//    assume n >= 0
+//    var res: Int
+//    res := 0
+//    while ((res + 1) * (res + 1) < n)
+//        invariant false // TODO
+//    {
+//        res := res + 1
+//    }
+//    assert res * res <= n  && n <= (res + 1) * (res + 1) 
+//}
+
+
+// --------- Solution ----------
+// I've also done the variant (used to verify the termination of a loop)
+
+method int_sqrt() {
+    var n: Int
+    assume n >= 0
+    
+    var res: Int
+    
+    res := 0
+    while ((res + 1) * (res + 1) < n)
+        invariant res * res <= n                // invariant
+    {
+        var z: Int := n - res                   // variant      
+        assert z >= 0                           // variant
+        // stii sigura ca nu merge mai jos de 0
+        // chiar daca nu se opreste la 0
+
+        res := res + 1
+
+        assert n - res >= 0                     // variant
+        assert n - res < z                      // variant
+
+    }
+
+    assert res * res <= n && n <= (res + 1) * (res + 1)
+}

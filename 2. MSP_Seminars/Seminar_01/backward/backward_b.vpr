@@ -1,0 +1,14 @@
+method b() {
+    var x: Int 
+    var y: Int 
+
+    assume x + y > (x + y) * y // TODO
+
+    // {x + y > (x + y) * y}
+    x := x + y 
+    // {x > x * y}
+    y := x * y 
+
+    // {x > y}
+    assert x > y
+}

@@ -1,0 +1,55 @@
+/*
+Define a function fib(n) that yields the n-th Fibonacci number.
+    fib(0) = 0
+    fib(1) = 1
+    fib(n+2) = fib(n+1) + fib(n)
+Provide a suitable precondition.
+Verify that the method on the right computes the nth Fibonacci number.
+Hint: You can use the skeleton 07-fib.vpr
+*/
+
+domain F {
+    function fib(n: Int): Int
+
+    axiom fib_over_zero {
+        fib(0) == 0             // ground term 0
+    }
+
+    axiom fib_over_one {
+        fib(1) == 1             // ground term 1
+    }
+
+    axiom fib_over_rest {
+        forall n: Int :: 
+            fib(n) == fib(n - 1) + fib(n - 2)       //recursive call
+    }
+}
+
+method iter_fib(n: Int) returns (res:Int)
+    requires 0 <= n
+    ensures res == fib(n)
+{    
+    res := 0
+    var next: Int := 1
+
+    var i: Int := 0
+
+    while (i < n) 
+        invariant 0 <= i && i <= n 
+        // TODO
+        invariant  res == fib(i) && next == fib(i+1)
+    {
+        var t: Int := res
+        res := next
+        next := t + next
+        i := i + 1
+    }
+}
+
+
+method client(){
+    assert fib(5) == 5
+
+    var r: Int := iter_fib(5)
+    assert r == 5
+}

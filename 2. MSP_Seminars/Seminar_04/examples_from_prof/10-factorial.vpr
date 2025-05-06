@@ -1,0 +1,23 @@
+domain X {
+    function fac(x: Int): Int 
+    function fac0(x: Int): Int
+
+    axiom {
+        forall x: Int ::
+            (x <= 1 ==> fac(x) == 1) && 
+            (x > 1 ==> fac(x) == x * fac0(x-1))
+    }
+
+    
+    axiom { 
+        forall x: Int :: {fac0(x)}
+            fac(x) == fac0(x)
+    } 
+}
+
+
+method client() 
+{
+    assert fac(1) == 1
+    assert fac(2) == 2
+}

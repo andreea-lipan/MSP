@@ -1,5 +1,10 @@
-// Note: this is not working yet
+/*
+Write a recursive method sum that yields the sum of the first n natural numbers.
+Provide a suitable specification.
+Check whether your specification is strong enough by verifying the client below.
+*/
 
+// the recursive sum function
 method sum(x: Int) returns (res: Int)
     requires x >= 0
     ensures res == x * (x+1) / 2
@@ -12,10 +17,9 @@ method sum(x: Int) returns (res: Int)
     }
 }
 
+// the client
 method main() {
     var r: Int 
-
     r := sum(10)
-
     assert r == 55
 }

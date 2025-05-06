@@ -1,0 +1,29 @@
+method naive_existential() 
+{
+  assert 3 >= 0 && 4 * 3 == 12
+  // does not work :/
+  // assert exists z:Int :: z >= 0 && 4 * z == 12
+}
+
+method client() {
+  assert 3 * 9 == 27
+  divides_fold(3, 27, 9)
+  var x: Int
+  x := divides_unfold(3, 27)
+  assert x >= 0 && 3 * x == 27
+}
+
+function divides(x:Int, y: Int): Bool
+    requires x >= 0 && y >= 0
+    //ensures result == exists z:Int :: z >= 0 && x * z == y
+
+method divides_fold(x: Int, y: Int, z: Int)
+    requires x > 0 && y > 0
+    requires z >= 0 && x * z == y
+    ensures divides(x, y) 
+
+method divides_unfold(x: Int, y: Int) returns (z: Int) 
+    requires x > 0 && y > 0 
+    requires divides(x, y)
+    ensures z >= 0 && x * z == y
+

@@ -1,20 +1,38 @@
-// Note: this is not working yet
+/*
+Use Viper to prove that McCathys's 91 function terminates.
+*/
 
-method M(n: Int) returns (r: Int) 
+method M(n: Int) returns (r: Int)
     requires n > 0
-    ensures 100 < n ==> r == n - 10
+    ensures n > 100 ==> r == n - 10
     ensures n <= 100 ==> r == 91
 {
-    var z: Int := n - res                   // variant      
-    assert z >= 0                           // variant
+    
+    var variant0: Int
+    if (n > 100) { 
+        variant0 := 0 // base case, ca nu se mai apeleaza recursiv de aici, se aia e 0
+    } else {
+        variant0 := (101 - n) // ca sa se opreaza apelurile recursive n-ul 
+                              // trebuie sa fie 101, asa ca facem 101-n. 
+                              // Pt ca cu cat se paroprie n de 101 cu atat 
+                              // scade valoarea lui 101-n
+    }
+    assert variant0 >= 0
 
     if (n > 100) {
         r := n - 10
     } else {
         r := M(n + 11)
         r := M(r)
-    }
 
-    assert n - res >= 0                     // variant
-    assert n - res < z                      // variant
+        var variant1: Int
+        if (n + 11 > 100) {  // verificam cu n+11 ca e singurul parametru pe care il avem
+            variant1 := 0
+        } else {
+            variant1 := (101 - (n + 11))
+        }
+        assert variant1 >= 0
+
+        assert variant1 < variant0 // variantul scade asadar functia se termina
+    }
 }

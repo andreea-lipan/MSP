@@ -1,0 +1,4 @@
+method client() 
+{
+    assert exists x: Int :: x == 0
+}

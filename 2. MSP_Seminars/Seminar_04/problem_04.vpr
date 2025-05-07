@@ -11,6 +11,11 @@ Hint: You can use the skeleton 07-fib.vpr
 domain F {
     function fib(n: Int): Int
 
+    axiom fib_under_zero {
+        forall n: Int ::
+            n < 0 ==> fib(n) == 0
+    }
+
     axiom fib_over_zero {
         fib(0) == 0             // ground term 0
     }
@@ -48,7 +53,8 @@ method iter_fib(n: Int) returns (res:Int)
 
 
 method client(){
-    assert fib(5) == 5
+
+    assert fib(-5) == 0
 
     var r: Int := iter_fib(5)
     assert r == 5

@@ -1,0 +1,15 @@
+// NOTE: idk how to test this
+
+field next: Ref
+field elem: Int
+
+
+predicate list(this: Ref) {
+    this != null ==> acc(this.next)
+                    && acc(this.elem)
+                    && acc(this.next.elem)
+                    && this.elem < this.next.elem
+                    && list(this.next)
+}
+
+

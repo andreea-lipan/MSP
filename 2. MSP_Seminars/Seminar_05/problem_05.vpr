@@ -1,0 +1,38 @@
+// --------- Requirements ----------
+
+// Reconsider the methond on the right. 
+
+// Change the precondition such that we can call the method by passing
+// both aliasing refernces and non-aliasing references to it as arguments
+// without violationg the precondition.
+
+// Does the assertion still hold? Why (not)?
+
+
+field f: Int
+
+method alias(a: Ref, b: Ref) 
+    requires a == b ? acc(a.f) : acc(a.f) && acc(b.f)
+{
+    a.f := 5
+    b.f := 7
+    // assert a.f == 5      //doesn't hold because if a==b, then after assignemnts the last value is 7
+                            // would hold if the assignment order was reversed
+}
+
+method client() {
+    var a:Ref := new(f)
+    var b:Ref := new(f)
+
+    a := b
+    assert a == b
+
+    alias(a,b)
+}
+
+method client2() {
+    var a:Ref := new(f)
+    var b:Ref := new(f)
+
+    alias(a,b)
+}

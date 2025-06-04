@@ -1,0 +1,44 @@
+// NOTE: This doesnt work! Idk how to make it work :)
+
+// Flyweight
+field val: Int
+
+// Factory
+field cache: Ref
+
+predicate factory(this: Ref)
+{
+    acc(this.cache) &&
+    (this.cache != null ==> acc(this.cache.val))
+}
+
+method get(this: Ref) returns (fly: Ref)
+    requires factory(this)
+    ensures  factory(this)
+{
+    unfold factory(this);
+
+    if (this.cache == null) {
+        var tmp: Ref := new(val)
+        tmp.val := 42
+        this.cache := tmp 
+    } 
+
+    fly := this.cache;
+
+    fold factory(this);
+}
+
+
+method client()
+{
+    var fact: Ref := new(cache);  
+    fact.cache := null;           
+
+    fold factory(fact);           
+
+    var fly: Ref := get(fact);   
+
+    // var x: Int := fly.val;
+    // assert x == 42;
+}

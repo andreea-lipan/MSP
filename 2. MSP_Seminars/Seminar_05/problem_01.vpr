@@ -1,0 +1,43 @@
+// --------- Requirements ----------
+
+// Consider axiomatization of 2D points on the right. We added a
+// function and an axiom for adding two points by adding their
+// components.
+
+// Try out different triggering patterns for the axiom on the right
+// and test them for client below. Find patterns such that:
+//      a. verificaation succeeds
+//      b. verification fails
+//      c. verification does not terminate
+
+
+// --------- Solution ----------
+
+domain Point { 
+
+   function cons(x: Int, y: Int): Point
+   function first(p: Point): Int 
+   function second(p: Point): Int 
+
+   function add(p: Point, q: Point): Point 
+
+   axiom destruct_over_construct {
+      forall x: Int, y: Int :: first(cons(x,y)) == x && second(cons(x,y)) == y
+   }
+
+   axiom add_points { 
+      forall p: Point, q: Point :: { add(p, q) } // verfication succeeds
+      // forall p: Point, q: Point :: { add(add(p, q), add(p, q)) } // verification fails
+      // forall p: Point, q: Point ::  // verification does not terminate
+         first(add(p,q)) == first(p) + first(q) 
+         && second(add(p,q)) == second(p) + second(q)
+   }
+}
+
+
+method test() {
+   var x: Point := add( cons(17, 42), cons(3,8) )
+
+   assert first(x) == 20
+   assert second(x) == 50
+}

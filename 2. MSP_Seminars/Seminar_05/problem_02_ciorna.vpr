@@ -1,0 +1,48 @@
+// --------- Requirements ----------
+
+// Use a lemma to verify the following client:
+
+
+// --------- Solution ----------
+
+// NOTE: this works too dar e mai lengthy decat cealalta implementare
+
+function foo(x: Int): Int
+{ 
+  x <= 0 ? 1 : foo(x - 2) + 3 
+}
+
+method client(r: Int)
+{
+
+    lemma(r)
+    var s: Int := foo(r) // s = ceil(r/2) * 3 + 1
+  
+    lemma(s)
+    var t: Int := foo(s) // t = ceil((ceil(r/2) * 3 + 1)/2) * 3 + 1
+
+    assert 2 <= t - s // should verify
+}
+
+function div_fara_virgula(x: Int): Int
+    requires x > 0
+    ensures x % 2 == 0 ==> result == x / 2
+    ensures x % 2 != 0 ==> result == (x / 2) + 1
+{ 
+  x % 2 == 0 ? x / 2 : (x / 2) + 1
+}
+
+method lemma(x: Int)
+    ensures x <= 0 ==> foo(x) == 1
+    ensures x > 0 ==> foo(x) == div_fara_virgula(x) * 3 + 1
+
+
+
+// example
+// r = 6
+// f(6) = 10 = s
+// f(f(6)) = f(10) = 16 = t
+
+// t - s >= 2
+
+// 16 - 10 >= 2  -> true

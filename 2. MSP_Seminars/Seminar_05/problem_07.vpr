@@ -1,0 +1,49 @@
+// --------- Requirements ----------
+
+// Exercise: cyclic lists
+
+// Write a predicate list(this) that represents cyclic lists. 
+// Hint: use the lseg predicate
+
+// Implement and verify a method that creats an empty list.
+
+// Implement and verify a method that inserts an element right
+// after the sentinel node
+
+
+// --------- Solution ----------
+
+field next: Ref
+
+predicate lseg(this: Ref, last: Ref) {
+    this != last ==> acc(this.next) && lseg(this.next, last)
+}
+
+predicate list(this: Ref)
+{
+    acc(this.next) && lseg(this.next, this)
+}
+
+method create() returns (res: Ref)
+    ensures list(res)
+{
+    res := new(next)
+    res.next := res
+
+    fold lseg(res.next, res)
+    fold list(res)
+}
+
+method insert(this: Ref)
+    requires list(this)
+    ensures list(this)
+{
+    unfold list(this)
+
+    var node: Ref := new(next)
+    node.next := this.next
+    this.next := node
+
+    fold lseg(node, this)
+    fold list(this)
+}

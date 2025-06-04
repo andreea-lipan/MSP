@@ -1,0 +1,47 @@
+field bal: Int
+
+method create() returns (newAccount: Ref)
+    ensures acc(newAccount.bal)
+    ensures newAccount.bal == 0
+{
+    newAccount := new(bal)
+    newAccount.bal := 0
+}
+
+method deposit(account: Ref, amount: Int)
+    requires amount >= 0
+    requires acc(account.bal)
+    ensures acc(account.bal)
+    ensures account.bal == old(account.bal) + amount
+{
+    account.bal := account.bal + amount
+}
+
+method transfer(source: Ref, destination: Ref, amount: Int)
+    requires amount >= 0
+    requires acc(source.bal) && acc(destination.bal)
+    ensures acc(source.bal) && acc(destination.bal)
+    ensures source.bal == old(source.bal) - amount
+    ensures destination.bal == old(destination.bal) + amount
+{
+    source.bal := source.bal - amount
+    destination.bal := destination.bal + amount
+}
+
+method client()
+{
+    var x: Ref
+    var y: Ref
+    var z: Ref
+    x := create()
+    y := create()
+    z := create()
+    deposit(x, 100)
+    deposit(y, 200)
+    deposit(z, 300)
+    transfer(x, y, 100)
+    assert x.bal == 0
+    assert y.bal == 300
+    assert z.bal == 300
+}
+

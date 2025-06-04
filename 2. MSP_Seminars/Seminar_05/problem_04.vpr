@@ -1,0 +1,50 @@
+// --------- Requirements ----------
+
+// Exercise: swapping the fields of two objects
+
+// Implement a swap method that exchanges the field values of two objects.
+
+// Specify its functional behavior.
+
+// Write a client method that creates two objects and calls swap on them.
+// Include an assertion to check that swap's specification is strong enough.
+
+// Change your client method such that it calls swap, passing the same reference
+// twice.
+
+
+// --------- Solution ----------
+
+field f: Int
+
+method swap(a: Ref, b: Ref)
+    requires acc(a.f) && acc(b.f)
+    ensures acc(a.f) && acc(b.f)
+    ensures a.f == old(b.f) && old(a.f) == b.f
+{
+    var aux: Ref := new(f)
+    aux.f := a.f 
+    a.f := b.f
+    b.f := aux.f  
+}
+
+// works
+method client1()
+{
+    var a: Ref := new(f)
+    a.f := 10
+    var b:Ref := new(f)
+    b.f := 20
+    swap(a, b)
+    assert a.f == 20
+    assert b.f == 10
+}
+
+// fails
+method client2()
+{
+    var a: Ref := new(f)
+    a.f := 10
+    swap(a, a)
+    assert a.f == 10
+}

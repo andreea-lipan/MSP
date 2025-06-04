@@ -1,0 +1,45 @@
+// --------- Requirements ----------
+
+// Use a lemma to verify the following client:
+
+
+// --------- Solution ----------
+
+function foo(x: Int): Int
+{ 
+  x <= 0 ? 1 : foo(x - 2) + 3 
+}
+
+method client(r: Int)
+{
+
+    lemma(r)
+    var s: Int := foo(r) // s = ceil(r/2) * 3 + 1
+  
+    lemma(s)
+    var t: Int := foo(s) // t = ceil((ceil(r/2) * 3 + 1)/2) * 3 + 1
+
+    assert 2 <= t - s // should verify
+}
+
+function ceil_half(x: Int): Int {
+  x % 2 == 0 ? x / 2 : x / 2 + 1
+}
+
+method lemma(x: Int)
+  ensures foo(x) == 3 * ceil_half(x) + 1
+
+
+// examples to udertsnad what the function does
+
+// f5 = 3 + f3 = 3 + 3 + f1 = 3 + 3 + 3 + f(-2) = 10
+// f6 = 3 + f4 = 3 + 3 + f2 = 3 + 3 + 3 + f0 = 10
+
+// f9 = 3 + f7 = 3 + 3 + f5 = 3 + 3 + 10 = 16
+// f10 = 3 + f8 = 3 + 3 + f6 = 16
+
+// f8 = 3 + f6 = 13
+
+
+// => f(n) = ceil(n/2) * 3 + 1
+

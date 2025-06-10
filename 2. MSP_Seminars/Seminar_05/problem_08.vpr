@@ -11,5 +11,3 @@ predicate list(this: Ref) {
                     && this.elem < this.next.elem
                     && list(this.next)
 }
-
-

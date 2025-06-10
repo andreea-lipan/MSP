@@ -1,0 +1,109 @@
+// NOTE: idk how to test this
+
+field next: Ref
+field elem: Int
+
+
+// predicate list(this: Ref) {
+//     this != null ==> acc(this.next)
+//                     && acc(this.elem)
+//                     && acc(this.next.elem)
+//                     && this.elem < this.next.elem
+//                     && list(this.next)
+// }
+
+
+predicate ordered(this: Ref, prev: Int) {
+    this != null ==> acc(this.next)
+                    && acc(this.elem)
+                    && prev < this.elem
+                    && ordered(this.next, this.elem)
+}
+
+predicate list3(this: Ref) {
+    acc(this.next) && acc(this.elem) && ordered(this.next, this.elem)
+}
+
+
+predicate list2(this: Ref) {
+    acc(this.elem) && acc(this.next) &&
+    (this.next != null ==> list(this.next))
+}
+
+method create() returns (res: Ref)
+    ensures list(res)
+{
+    res := new(next,elem)
+    res.next := null
+    res.elem := 0
+
+    fold list(res)
+}
+// 1
+// 0 1 2 3 null
+
+predicate list(this: Ref) {
+    acc(this.next) && acc(this.elem) &&
+    (this.next != null ==> list(this.next) &&
+        unfolding list(this.next) in this.elem < this.next.elem
+    )
+}
+
+method insert(this: Ref, value: Int)
+    requires value > 0
+    requires list(this)
+    ensures list(this)
+{
+    unfold list(this)
+
+    var current: Ref := this
+    var remaining: Ref := this.next
+
+    if(this.next == null && value > this.elem) {
+        var node: Ref := new(next,elem)
+        node.next := remaining
+        node.elem := value
+        current.next := node
+        fold list(node)
+
+    } else {
+        if (this.next != null) {
+            unfold list(remaining)
+
+            if(value < remaining.elem && value > this.elem) {
+                fold list(remaining)
+
+                var node: Ref := new(next,elem)
+                node.next := remaining
+                node.elem := value
+                current.next := node
+                
+                fold list(node)
+            } else {
+                fold list(remaining)
+                insert(remaining, value)
+            }
+        }
+    }
+
+    fold list(this)
+}
+
+
+// method client(){
+//     var endN: Ref := null
+
+//     fold list(endN)
+
+//     var end: Ref := new(next,elem)
+//     end.elem := 100
+//     end.next := endN
+
+//     var el3: Ref := new(next,elem)
+//     el3.elem := 30
+//     el3.next := end
+
+//     fold list(el3)
+
+    
+// }

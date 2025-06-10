@@ -26,9 +26,10 @@ method append(this: Ref, e: Int)
         n.next := null
         this.elem := e
         this.next := n
-        fold list(n)
+        fold list(this.next)
     } else {
-        append(this.next, e)
+        append(this.next, e) // poti sa faci append de this.next pt ca implicatia din predicat e true
+                            // aka this.next != null
     }
     fold list(this)
 }

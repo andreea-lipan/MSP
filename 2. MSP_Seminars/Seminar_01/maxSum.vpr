@@ -3,7 +3,7 @@
 // Consider the methond maxSum with the following signature:
 // method maxSum(x: Int, y: Int)
 //      returns (sum: Int, max: Int)
-// max is supposed to store the sum of x and y in variable
+// maxSum is supposed to store the sum of x and y in variable
 // sum and the maximum of x and y in variable max, respectively.
 
 // a). Define a reasonable contract for maxSum
@@ -28,7 +28,9 @@
 
 method maximum(x: Int, y: Int) returns (max:Int)
     requires true
-    ensures max >= x && max >= y && (max == x || max == y)
+    // ensures max >= x && max >= y && (max == x || max == y)
+    ensures x > y ==> max == x
+    ensures y > x ==> max == y
 {
     max := x > y ? x : y
 }
@@ -37,7 +39,9 @@ method maximum(x: Int, y: Int) returns (max:Int)
 method maxSum(x: Int, y: Int) returns (sum: Int, max: Int)
     requires true
     ensures sum == x + y
-    ensures max >= x && max >= y && (max == x || max == y)
+    // ensures max >= x && max >= y && (max == x || max == y)
+    ensures x > y ==> max == x
+    ensures y > x ==> max == y
 {
     sum := x + y
     max := maximum(x, y)

@@ -4,6 +4,7 @@
 // --------- Solution ----------
 // I've also done the variant (used to verify the termination of a loop)
 
+// function computes n * m using repeted division and multiplication
 method main() {
     var n: Int; var m: Int; var res: Int
     
@@ -30,3 +31,18 @@ method main() {
     }
     assert res == n * m
 }
+
+// Example
+// x = 5 && y = 2
+
+// 5 % 2 == 1 => res += 2
+// 5 / 2 = 2
+// 2 * 2 => 4
+
+// 2 % 2 == 0 => res = 2
+// 2 / 2 = 1
+// 4 * 2 = 8
+
+// 1 % 2 == 1 => res = 2 + 8 = 10
+// 1 / 2 = 0 <-- am ajuns la 0, deci res e rezultatul
+// 8 * 2 = 16

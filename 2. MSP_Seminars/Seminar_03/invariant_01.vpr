@@ -4,8 +4,9 @@
 // --------- Solution ----------
 // I've also done the variant (used to verify the termination of a loop)
 
+// computes restul impartirii cu rest
 method main() {
-    var M: Int 
+    var M: Int  // nr initial
     var N: Int 
     var res: Int 
 
@@ -17,7 +18,7 @@ method main() {
     while (m >= N) 
         invariant M == res * N + m     // invariant
     {
-        var z: Int := M - (res * N)    // variant
+        var z: Int := M - (res * N)    // variant -> M e nr init, (res * N) tot cresc => M - (res * N)  o sa scada
         assert z >= 0                  // variant
 
         m := m - N 

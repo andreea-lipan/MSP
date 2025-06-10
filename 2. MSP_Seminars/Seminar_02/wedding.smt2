@@ -21,7 +21,7 @@
 
 (define-fun tripleXor ((a Bool) (b Bool) (c Bool)) Bool 
     (and
-        (or a b c)
+        (or a b c)      ; macar una dintre ele sa fie adevarata
         (=> a (and (not b) (not c)))
         (=> b (and (not a) (not c)))
         (=> c (and (not b) (not a)))
